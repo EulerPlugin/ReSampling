@@ -79,11 +79,7 @@ sf.write(
 
 `args = parser.parse_args()` : Actually parses the CLI arguments and binds them to the `args` namespace
 
-
-<br>
-
-
-**Validation Logic**
+Validation Logic :
 
 `if not args.input.excists():`
 
@@ -99,6 +95,48 @@ Raised a `FileNotFoundError` if the path does not exist
 **2) `pathlib` - Handiling Paths and Filenames**
 
 - `args.input.stem` -> filename without extension
+
+- `args.input.suffix` -> extension (e.g., `.wav`)
+
+- `with_name(newname)` -> creates a new Path in the same directory but with a different filename
+
+In this script, the output filename is created in the format
+
+`"{stem}_{SampleRate}Hz{suffix}"`, and saved in the same folder as the original
+
+
+<br>
+
+**3) soundfile (pysoundfile) - Reading/Writind I/O**
+
+- `data, fs = sf.read(args.input)`
+
+Return values:
+
+1) `data` (Numpy array)
+
+2) `fs` (interger sample rate)
+
+<br>
+
+
+- `sf.write(path, data, samplerate)`
+
+: saves the audio data to file.
+
+Why specify the sample rate again? Even though `fs` was obtained when reading the file, the new file's header metadata need to specify the sample rate of this file. In other words, even if `resample_poly` has already changed the array, you must explicitly set the sample rate so it is written correctly in the file format.
+
+
+<br>
+
+
+**4) scipy.signal.resample_poly - Polyphase Resampling**
+
+- `resmaple_poly(x, up, down, axis = 0, window = ('kaiser', 5.0))`
+
+: `up` (upsampling factor) and `down` (downsamppling factor) must be integers.
+
+In this code : `up = args.SampleRate`, `down = fs` directly (e.g., `48000/44100`)
 
 
 
