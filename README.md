@@ -62,12 +62,43 @@ sf.write(
 - Creating a new file alongside the original using `soundfile.write`
 
 
+<br>
+
+
+-----
+
+### Library Explanation
+
+**1) `argparse` - Command line argument parsing**
+
+`parser = argparse.ArgumentParser()` : Creates a parset object that defines descriptions, options, etc.
+
+`parser.add_argument("input", type = pathlib.Path)` : Takes the firts positional argument as a file path. By specifying `type = Path`, it can be used directly as a Path object after parsing (prevents string-handling mistakes)
+
+`parser.add_argument("SampleRate", type=int)` : Takes the second positional argument as the target sample rate (integer)
+
+`args = parser.parse_args()` : Actually parses the CLI arguments and binds them to the `args` namespace
+
+
+<br>
+
+
+**Validation Logic**
+
+`if not args.input.excists():`
 
 
 
+Raised a `FileNotFoundError` if the path does not exist
+
+-> Satifies a minimum level of validity check
 
 
+<br>
 
+**2) `pathlib` - Handiling Paths and Filenames**
+
+- `args.input.stem` -> filename without extension
 
 
 
